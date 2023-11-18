@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as basicAuth from 'express-basic-auth';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
+import { CardsModule } from './modules/cards/cards.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,16 +16,16 @@ async function bootstrap() {
     },
   }));
   const config = new DocumentBuilder()
-    .setTitle('Student Question Api')
-    .setDescription('Api to use for student and examination')
+    .setTitle('Cards Api')
+    .setDescription('Api to use for add and get cards')
     .setVersion('1.0')
     .build();
   const options: SwaggerDocumentOptions = {
-    include: [AppModule]
+    include: [CardsModule]
   }
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('api', app, document);
-  const instance = await app.listen(8000);
-  console.log(`App is running at 8000}`);
+  await app.listen(process.env.PORT || 8000);
+  console.log(`App is running at ${process.env.PORT || 8000}`);
 }
 bootstrap();
