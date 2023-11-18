@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import * as basicAuth from 'express-basic-auth';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 import { CardsModule } from './modules/cards/cards.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +22,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const options: SwaggerDocumentOptions = {
-    include: [CardsModule]
+    include: [CardsModule, TransactionsModule]
   }
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('api', app, document);
