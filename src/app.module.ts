@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CardsModule } from './modules/cards/cards.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
+import { OnlinePayModule } from './modules/pay/online-pay.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
       process.env.MONGO_URL
     ),
     CardsModule,
-    TransactionsModule
+    TransactionsModule,
+    OnlinePayModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,33 @@
+{
+    "card": {
+        "bank": "CITIBANK N.A.",
+        "brand": "MasterCard",
+        "city": null,
+        "country": "th",
+        "created": "2023-11-19T07: 06: 19Z",
+        "expiration_month": 12,
+        "expiration_year": 2025,
+        "financing": "credit",
+        "fingerprint": "j8fnQ3ygoCbsmntzVTvnlzzIWA2gAX5Y6oCqnLWx9pY=",
+        "first_digits": null,
+        "id": "card_test_5xtlgjd96saxp9cueld",
+        "last_digits": "5454",
+        "livemode": false,
+        "name": "Mritunjay Upadhyay",
+        "object": "card",
+        "phone_number": null,
+        "postal_code": null,
+        "security_code_check": true,
+        "state": null,
+        "street1": null,
+        "street2": null,
+        "tokenization_method": null
+    },
+    "charge_status": "unknown",
+    "created": "2023-11-19T07: 06: 19Z",
+    "id": "tokn_test_5xtlgjd9pue9udjoag8",
+    "livemode": false,
+    "location": "https: //vault.omise.co/tokens/tokn_test_5xtlgjd9pue9udjoag8",
+    "object": "token",
+    "used": false
+}
