@@ -7,5 +7,5 @@ export class GetCardDto {
   })
   @IsString()
   @IsNotEmpty()
-  public userId: string;
+  public cust_id: string;
 }

@@ -32,7 +32,6 @@ export class OmiseService {
         : Promise<{ error: boolean, message?: string, status?: number, data?: any }> {
         const { email, description, token } = createCustomerDto;
         console.log("1. create customer dto", createCustomerDto);
-        const parsedToken = typeof token === 'string' ? JSON.parse(token) : token;
         try {
             const customer = await omise.customers.create({
                 email,

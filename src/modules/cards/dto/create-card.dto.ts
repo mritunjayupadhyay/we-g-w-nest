@@ -3,19 +3,27 @@ import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateCardDto {
   @ApiProperty({
     type: String,
-    default: '1'
+    default: 'cust_test_5xtljdeg7t0bx0br9fi'
   })
   @IsString()
   @IsNotEmpty()
-  public userId: string;
+  public cust_id: string;
 
   @ApiProperty({
     type: String,
-    default: '5425233430109903'
+    default: 'card_test_5xtlgjd96saxp9cueld'
   })
   @IsString()
   @IsNotEmpty()
-  public cardNumber: string;
+  public card_id: string;
+
+  @ApiProperty({
+    type: String,
+    default: '4242'
+  })
+  @IsString()
+  @IsNotEmpty()
+  public last_digits: string;
 
   @ApiProperty({
     type: String,
@@ -27,25 +35,33 @@ export class CreateCardDto {
 
   @ApiProperty({
     type: Number,
-    default: 3
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  public expiryMonth: number;
-
-  @ApiProperty({
-    type: Number,
     default: 25
   })
   @IsNumber()
   @IsNotEmpty()
-  public expiryYear: number;
+  public expiration_year: number;
 
   @ApiProperty({
     type: Number,
-    default: 888
+    default: 2
   })
   @IsNumber()
   @IsNotEmpty()
-  public cvv: number;
+  public expiration_month: number;
+
+  @ApiProperty({
+    type: String,
+    default: '4242'
+  })
+  @IsString()
+  @IsNotEmpty()
+  public brand: string;
+
+  @ApiProperty({
+    type: String,
+    default: '4242'
+  })
+  @IsString()
+  @IsNotEmpty()
+  public bank: string;
 }

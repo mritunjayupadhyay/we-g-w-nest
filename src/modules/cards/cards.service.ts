@@ -14,8 +14,8 @@ export class CardsService {
   async findAll(getQuestionDto: GetCardDto)
   :Promise<{error: boolean, message?: string, status?: number, data?: ICard[]}> {
     try {
-      const { userId } = getQuestionDto;
-      const data = await this.cardModel.find({ userId });
+      const { cust_id } = getQuestionDto;
+      const data = await this.cardModel.find({ cust_id });
       return {error: false, data};
     } catch (error) {
       return {error: true, message: error.message, status: HttpStatus.BAD_REQUEST};
@@ -28,18 +28,21 @@ export class CardsService {
 
   async validateCard(createCardDto: CreateCardDto): 
   Promise<{error: boolean, status?: number, message?: string, card?:ICard}> {
-    const { cardNumber, userId, name, cvv, expiryMonth, expiryYear } = createCardDto;
-    const card = await this.cardModel.findOne({cardNumber});
+    const { last_digits, bank, brand, expiration_month, expiration_year,
+    name, cust_id, card_id } = createCardDto;
+    const card = await this.cardModel.findOne({card_id});
     if (card) {
       return {error: true, card, message: 'Card already exists'};
     }
     const newCard: ICard = new this.cardModel({})
-    newCard.cardNumber = cardNumber;
+    newCard.last_digits = last_digits;
+    newCard.card_id = card_id;
     newCard.name = name;
-    newCard.cvv = cvv;
-    newCard.expiryMonth = expiryMonth;
-    newCard.expiryYear = expiryYear;
-    newCard.userId = userId; 
+    newCard.bank = bank;
+    newCard.brand = brand;
+    newCard.expiration_month = expiration_month;
+    newCard.expiration_year = expiration_year;
+    newCard.cust_id = cust_id; 
     const errors = await validate(newCard);
         if (errors.length > 0) {
             return { 
