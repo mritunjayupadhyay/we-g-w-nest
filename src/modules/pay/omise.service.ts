@@ -68,7 +68,7 @@ export class OmiseService {
     }
 
     async addCardToCustomer(addCardToCustomerDto: AddCardToCustomerDto)
-        : Promise<{ error: boolean, message?: string, status?: number, data?: any }> {
+        : Promise<{ error: boolean, message?: string, status?: number, data?: {cust_id: string, cards: Partial<ICard>[]} }> {
         const { customer, token } = addCardToCustomerDto;
         try {
             const updatedCustomer: IOmiseCustomerResponse = await omise.customers.update(customer, {
