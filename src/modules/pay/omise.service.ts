@@ -4,6 +4,9 @@ import { CreateCustomerDto } from './dto/createCustomer.dto';
 import { GetCardsDto } from './dto/getCards.dto';
 import { ChargeWithCustomerCardDto } from './dto/chargeWithCustomerCard.dto';
 import { AddCardToCustomerDto } from './dto/addCardToCustomer.dto';
+import { IAllCardsResponse, IOmiseCustomerResponse } from './interfaces/customer-omise-response.interface';
+import { ICard } from '../cards/card.schema';
+import { formatCards } from './format.helper';
 
 var omise = require('omise')({
     'secretKey': 'skey_test_5wvisdjjoqmfof5npzw',
@@ -17,30 +20,30 @@ export class OmiseService {
     ) { }
 
     async findAll(getCardsDto: GetCardsDto)
-        : Promise<{ error: boolean, message?: string, status?: number, data?: any }> {
+        : Promise<{ error: boolean, message?: string, status?: number, data?: Partial<ICard>[] }> {
         try {
-            const customers = await omise.customers.listCards(
+            const customers: IAllCardsResponse = await omise.customers.listCards(
                 getCardsDto.cust_id
               )
-            return { error: false, data: customers };
+            return { error: false, data: formatCards(customers.data, getCardsDto.cust_id) };
         } catch (error) {
             return { error: true, message: error.message, status: HttpStatus.BAD_REQUEST };
         }
     }
 
     async createCustomer(createCustomerDto: CreateCustomerDto)
-        : Promise<{ error: boolean, message?: string, status?: number, data?: any }> {
+        : Promise<{ error: boolean, message?: string, status?: number, data?: {cust_id: string, cards: Partial<ICard>[]} }> {
         const { email, description, token } = createCustomerDto;
         console.log("1. create customer dto", createCustomerDto);
         try {
-            const customer = await omise.customers.create({
+            const customer:IOmiseCustomerResponse = await omise.customers.create({
                 email,
                 description,
                 'card': token//tokenId
               })
               console.log("3. create customer dto", customer);
 
-            return { error: false, data: customer };
+            return { error: false, data: {cust_id: customer.id, cards: formatCards(customer.cards.data, customer.id)} };
         } catch (error) {
             return { error: true, message: error.message, status: HttpStatus.BAD_REQUEST };
         }
@@ -68,13 +71,13 @@ export class OmiseService {
         : Promise<{ error: boolean, message?: string, status?: number, data?: any }> {
         const { customer, token } = addCardToCustomerDto;
         try {
-            const updatedCustomer = await omise.customers.update(customer, {
+            const updatedCustomer: IOmiseCustomerResponse = await omise.customers.update(customer, {
                 card: token
               })
               console.log("3. create customer dto", customer);
 
-            return { error: false, data: updatedCustomer };
-        } catch (error) {
+              return { error: false, data: {cust_id: customer, cards: formatCards(updatedCustomer.cards.data, customer)} };
+            } catch (error) {
             return { error: true, message: error.message, status: HttpStatus.BAD_REQUEST };
         }
     }
