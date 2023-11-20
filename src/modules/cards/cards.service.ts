@@ -68,4 +68,10 @@ export class CardsService {
             return {error: false, data: newCard};
         }
   }
+
+  async addCards(cards: Partial<ICard>[]) {
+    for (const card of cards) {
+      await this.create(card as CreateCardDto);
+    }
+  }
 }

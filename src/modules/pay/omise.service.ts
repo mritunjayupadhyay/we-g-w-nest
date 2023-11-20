@@ -7,6 +7,9 @@ import { AddCardToCustomerDto } from './dto/addCardToCustomer.dto';
 import { IAllCardsResponse, IOmiseCustomerResponse } from './interfaces/customer-omise-response.interface';
 import { ICard } from '../cards/card.schema';
 import { formatCards } from './format.helper';
+import { CardsService } from '../cards/cards.service';
+import { TransactionService } from '../transactions/transactions.service';
+import { CreateTransactionDto } from '../transactions/dto/create.transaction.dto';
 
 var omise = require('omise')({
     'secretKey': 'skey_test_5wvisdjjoqmfof5npzw',
@@ -17,6 +20,8 @@ var omise = require('omise')({
 @Injectable({ scope: Scope.REQUEST })
 export class OmiseService {
     constructor(
+        private cardsService: CardsService,
+        private transactionService: TransactionService
     ) { }
 
     async findAll(getCardsDto: GetCardsDto)
@@ -42,7 +47,11 @@ export class OmiseService {
                 'card': token//tokenId
               })
               console.log("3. create customer dto", customer);
-
+              try {
+                await this.cardsService.addCards(formatCards(customer.cards.data, customer.id))
+              } catch (error) {
+                console.log("error", error);
+              }
             return { error: false, data: {cust_id: customer.id, cards: formatCards(customer.cards.data, customer.id)} };
         } catch (error) {
             return { error: true, message: error.message, status: HttpStatus.BAD_REQUEST };
@@ -60,7 +69,17 @@ export class OmiseService {
                 card,
               })
               console.log("3. create customer dto", customer);
-
+              try {
+                const createCardDto: CreateTransactionDto = {
+                    userId: customer,
+                    cardNumber: card,
+                    reference: 'charged for test',
+                    data: charge
+                }
+                await this.transactionService.create(createCardDto);
+              } catch (error) {
+                console.log("error", error);
+              }
             return { error: false, data: charge };
         } catch (error) {
             return { error: true, message: error.message, status: HttpStatus.BAD_REQUEST };

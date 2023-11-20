@@ -10,5 +10,6 @@ import { transactionSchema } from './transaction.schema';
   ],
   controllers: [TransactionController],
   providers: [TransactionService],
+  exports: [TransactionService]
 })
 export class TransactionsModule {}
