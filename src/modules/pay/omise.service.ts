@@ -39,14 +39,12 @@ export class OmiseService {
     async createCustomer(createCustomerDto: CreateCustomerDto)
         : Promise<{ error: boolean, message?: string, status?: number, data?: {cust_id: string, cards: Partial<ICard>[]} }> {
         const { email, description, token } = createCustomerDto;
-        console.log("1. create customer dto", createCustomerDto);
         try {
             const customer:IOmiseCustomerResponse = await omise.customers.create({
                 email,
                 description,
                 'card': token//tokenId
               })
-              console.log("3. create customer dto", customer);
               try {
                 await this.cardsService.addCards(formatCards(customer.cards.data, customer.id))
               } catch (error) {
@@ -68,7 +66,6 @@ export class OmiseService {
                 customer,
                 card,
               })
-              console.log("3. create customer dto", customer);
               try {
                 const createCardDto: CreateTransactionDto = {
                     userId: customer,
@@ -93,7 +90,6 @@ export class OmiseService {
             const updatedCustomer: IOmiseCustomerResponse = await omise.customers.update(customer, {
                 card: token
               })
-              console.log("3. create customer dto", customer);
 
               return { error: false, data: {cust_id: customer, cards: formatCards(updatedCustomer.cards.data, customer)} };
             } catch (error) {

@@ -24,9 +24,7 @@ export class OnlinePayController {
 
   @Post()
   async create(@Body() createCustomerDto: CreateCustomerDto) {
-    console.log("create customer dto", createCustomerDto);
     const { error, data, message, status} = await this.omiseCustomersService.createCustomer(createCustomerDto);
-    console.log("2. create customer dto", createCustomerDto);
 
     if (error === true) {
         throw new HttpException({
